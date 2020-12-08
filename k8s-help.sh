@@ -55,8 +55,29 @@ kubectl get svc
 
 #################### Docker Node app#
 cd nodeapp
-node server.job
+# server.js
+var http = require('http');
+
+var handleRequest = function(request, response) {
+  console.log('Received request for URL: ' + request.url);
+  response.writeHead(200);
+  response.end('Hello docker, sample kalyan demo app!');
+};
+var www = http.createServer(handleRequest);
+www.listen(8000);
+
+
+node server.js
 http://localhost:8000/
+
+
+#Dockerfile
+FROM node:8
+MAINTAINER kalyanachakravarthy
+EXPOSE 8000
+COPY server.js .
+CMD node server.js
+
 
 docker build -t hello-node:v1 .
 
